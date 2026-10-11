@@ -15,16 +15,16 @@ func apply_action_to_tile(action: Player.ActionType, tile: Vector2i) -> void:
 	var tile_data: TileData = get_cell_tile_data(tile)
 	match (action):
 		Player.ActionType.PLANT_SEED:
-			print("planting seed")
+			print("planting seed (garden.gd)")
 			change_crop_tile(tile, Player.current_seed)
 		Player.ActionType.HARVEST_CROP:
-			print("harvesting crop")
+			print("harvesting crop (garden.gd)")
 			change_crop_tile(tile, Player.Crops.EMPTY)
 		Player.ActionType.DELETE_CROP:
-			print("deleting crop")
+			print("deleting crop (garden.gd)")
 			change_crop_tile(tile, Player.Crops.EMPTY)
 		Player.ActionType.WATER_CROP:
-			print("watering crop")
+			print("watering crop (garden.gd)")
 			if tile_data.watered:
 				push_error("tile is already watered")
 			else:
