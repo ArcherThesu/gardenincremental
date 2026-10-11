@@ -14,16 +14,16 @@ func _process(delta: float) -> void:
 func apply_action_to_tile(action: Player.ActionType, tile: Vector2i) -> void:
 	var tile_data: TileData = get_cell_tile_data(tile)
 	match (action):
-		Player.actionType.PLANT_SEED:
+		Player.ActionType.PLANT_SEED:
 			print("planting seed")
 			change_crop_tile(tile, Player.current_seed)
-		Player.actionType.HARVEST_CROP:
+		Player.ActionType.HARVEST_CROP:
 			print("harvesting crop")
 			change_crop_tile(tile, Player.Crops.EMPTY)
-		Player.actionType.DELETE_CROP:
+		Player.ActionType.DELETE_CROP:
 			print("deleting crop")
 			change_crop_tile(tile, Player.Crops.EMPTY)
-		Player.actionType.WATER_CROP:
+		Player.ActionType.WATER_CROP:
 			print("watering crop")
 			if tile_data.watered:
 				push_error("tile is already watered")
@@ -32,7 +32,7 @@ func apply_action_to_tile(action: Player.ActionType, tile: Vector2i) -> void:
 					change_soil_tile(tile, Player.Soil_State.WETFERTILIZED)
 				else:
 					change_soil_tile(tile, Player.Soil_State.WET)
-		Player.actionType.FERTILIZE_SOIL:
+		Player.ActionType.FERTILIZE_SOIL:
 			print("fertilizing soil")
 			if tile_data.fertilized:
 				push_error("tile is already fertilized")

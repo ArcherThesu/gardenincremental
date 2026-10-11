@@ -1,8 +1,9 @@
 extends AnimatedSprite2D
 
-@export var spd: float = 1.0
+@export var spd: float = 1 #tiles per second
 
-var movement_queue: Array = [] #fill with arrays with tile coords and action info
+
+var movement_queue: Array = [[Vector2i(0, 3),Player.ActionType.PLANT_SEED],[Vector2i(1, 3),Player.ActionType.HARVEST_CROP]] #fill with arrays with tile coords and action info
 @onready var tile_map_plots := get_node("../backgroundgrass/plots")
 var idle_position: Vector2 = Vector2(200,88)
 # flow of robot mvt:
@@ -13,7 +14,7 @@ var idle_position: Vector2 = Vector2(200,88)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	position = idle_position
-	updated_animations(Vector2i.ZERO)
+	update_animations(Vector2i.ZERO)
 	Player.robotmove.connect(add_to_movement_queue)
 	pass
 
@@ -23,21 +24,36 @@ func _process(_delta) -> void:
 func add_to_movement_queue(mvntarr: Array) -> void:
 	movement_queue.append_array(mvntarr)
 
+var queue_processing: bool = false
 func process_movement_queue() -> void:
+	if queue_processing:
+		return
+	queue_processing = true
 	if movement_queue.size() > 0:
 		var next_move = movement_queue[0]
 		await move_to_tile(next_move[0])
-		do_action(next_move[1], next_move[0])
+		await do_action(next_move[1], next_move[0])
 		movement_queue.remove_at(0)
 	else:
 		if position != idle_position:
 			await move_to_tile(tile_map_plots.local_to_map(tile_map_plots.to_local(idle_position)))
+	update_animations(Vector2i.ZERO)
+	queue_processing = false
+
 
 func move_to_tile(tile: Vector2i) -> void:
 	var new_position = tile_map_plots.to_global(tile_map_plots.map_to_local(tile))
+	update_animations(new_position-position)
+
+	#getting current tile to calculate distance to new tile, then using that to calculate duration of movement based on speed
+	var current_tile = tile_map_plots.local_to_map(tile_map_plots.to_local(global_position))
+	var duration = Vector2(current_tile).distance_to(Vector2(tile)) / spd
+
 	var newtween = create_tween()
-	newtween.tween_property(self, "position", new_position, 10.0/(spd+1)).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	newtween.tween_property(self, "position", new_position, duration).set_trans(Tween.TRANS_LINEAR)
 	await newtween.finished
+
+	print("finished moving to tile: "+str(tile))
 	return
 
 
@@ -55,10 +71,9 @@ func do_action(action: Player.ActionType, tile: Vector2i) -> void:
 	speed_scale = -Player.action_time_scale
 	play("Interact")
 	await animation_finished
-	updated_animations(Vector2i.ZERO)
-	pass
+	update_animations(Vector2i.ZERO)
 
-func updated_animations(mvt: Vector2i) -> void:
+func update_animations(mvt: Vector2i) -> void:
 	print("updating animations with mvt: "+str(mvt))
 	var dir: int = Player.Direction.IDL #IDL, N, E, S, W
 	if mvt != Vector2i.ZERO:

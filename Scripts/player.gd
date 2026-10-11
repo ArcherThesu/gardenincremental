@@ -57,7 +57,8 @@ func _enter_tree() -> void:
 		
 func do_action_on_plot(action: ActionType, tile: Vector2i) -> void:
 	update_plot(tile.x + tile.y * 5, plots[tile.x + tile.y * 5]["crop"], plots[tile.x + tile.y * 5]["crop_state"], plots[tile.x + tile.y * 5]["soil"])
-	action_on_plot.emit(action, tile)
+	apply_action_to_plot.emit(action, tile)
+
 func set_empty_plot() -> void:
 	for i in range(25):
 		plots.append({
