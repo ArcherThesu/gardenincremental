@@ -15,6 +15,7 @@ enum direction {
 var dirstr = ["idle","N","E","S","W"]
 
 enum actionType {
+	IDLE,
 	PLANT_SEED,
 	HARVEST_CROP,
 	DELETE_CROP,
