@@ -42,8 +42,8 @@ func move_to_tile(tile: Vector2i) -> void:
 
 
 
-func do_action(action: Player.actionType, tile: Vector2i) -> void:
-	if action == Player.actionType.IDLE:
+func do_action(action: Player.ActionType, tile: Vector2i) -> void:
+	if action == Player.ActionType.IDLE:
 		return
 	speed_scale = Player.action_time_scale
 	play("Interact")
@@ -60,12 +60,12 @@ func do_action(action: Player.actionType, tile: Vector2i) -> void:
 
 func updated_animations(mvt: Vector2i) -> void:
 	print("updating animations with mvt: "+str(mvt))
-	var dir: int = Player.direction.IDL #IDL, N, E, S, W
+	var dir: int = Player.Direction.IDL #IDL, N, E, S, W
 	if mvt != Vector2i.ZERO:
 		if abs(mvt.x) > abs(mvt.y):
-			dir = Player.direction.E if mvt.x > 0 else Player.direction.W
+			dir = Player.Direction.E if mvt.x > 0 else Player.Direction.W
 		else:
-			dir = Player.direction.N if mvt.y > 0 else Player.direction.S
+			dir = Player.Direction.N if mvt.y > 0 else Player.Direction.S
 		play(Player.dirstr[dir]+"_Move")
 	else:
 		play("default")

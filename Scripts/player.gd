@@ -1,10 +1,11 @@
 extends Node
+static var instance: Node = null
 
 signal robotmove(mvntarr: Array)
-signal action_on_plot(action: Player.actionType, tile: Vector2i)
-signal apply_action_to_plot(action: Player.actionType, tile: Vector2i)
+signal action_on_plot(action: ActionType, tile: Vector2i)
+signal apply_action_to_plot(action: ActionType, tile: Vector2i)
 
-enum direction {
+enum Direction {
 	IDL,
 	N,
 	E,
@@ -14,7 +15,7 @@ enum direction {
 
 var dirstr = ["idle","N","E","S","W"]
 
-enum actionType {
+enum ActionType {
 	IDLE,
 	PLANT_SEED,
 	HARVEST_CROP,
@@ -23,13 +24,13 @@ enum actionType {
 	FERTILIZE_SOIL
 }
 
-enum crops {
+enum Crops {
 	EMPTY,
 	WHEAT,
 	TOMATO
 }
 
-enum soil_state {
+enum SoilState {
 	DRY,
 	WET,
 	FERTILIZED,
@@ -37,7 +38,7 @@ enum soil_state {
 }
 
 
-var current_seed := crops.WHEAT
+var current_seed := Crops.WHEAT
 
 var action_time_scale := 1.0
 
@@ -47,18 +48,25 @@ func _ready() -> void:
 	set_empty_plot()
 	action_on_plot.connect(do_action_on_plot)
 
-func do_action_on_plot(action: actionType, tile: Vector2i) -> void:
+func _enter_tree() -> void:
+	if instance == null:
+		instance = self
+	else:
+		# If a second one tries to spawn, destroy it immediately to prevent stale references
+		queue_free() 
+		
+func do_action_on_plot(action: ActionType, tile: Vector2i) -> void:
 	update_plot(tile.x + tile.y * 5, plots[tile.x + tile.y * 5]["crop"], plots[tile.x + tile.y * 5]["crop_state"], plots[tile.x + tile.y * 5]["soil"])
-
+	action_on_plot.emit(action, tile)
 func set_empty_plot() -> void:
 	for i in range(25):
 		plots.append({
-			"crop": crops.EMPTY,
+			"crop": Crops.EMPTY,
 			"crop_state": 0,
-			"soil": soil_state.DRY
+			"soil": SoilState.DRY
 		})
 
-func update_plot(plotNum: int, crop: crops, crop_state: int, soil: soil_state) -> void:
+func update_plot(plotNum: int, crop: Crops, crop_state: int, soil: SoilState) -> void:
 	plots[plotNum] = {
 		"crop": crop,
 		"crop_state": crop_state,

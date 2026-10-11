@@ -4,6 +4,7 @@
 [ext_resource type="TileSet" uid="uid://c4700v1it55cb" path="res://new_tile3_set.tres" id="2_2vcl1"]
 [ext_resource type="Script" uid="uid://dqlf7u4o65nwb" path="res://garden.gd" id="3_gc0xh"]
 [ext_resource type="SpriteFrames" uid="uid://62hgx2uuul3p" path="res://robotanim.tres" id="4_qb2l5"]
+[ext_resource type="Script" uid="uid://dofbmrdafnvk6" path="res://robot.gd" id="5_i01nk"]
 
 [node name="Node2D" type="Node2D" unique_id=593847005]
 
@@ -28,3 +29,6 @@ script = ExtResource("3_gc0xh")
 [node name="robot" type="AnimatedSprite2D" parent="." unique_id=1990565166]
 position = Vector2(216, 88)
 sprite_frames = ExtResource("4_qb2l5")
+animation = &"Interact"
+script = ExtResource("5_i01nk")
+spd = null
