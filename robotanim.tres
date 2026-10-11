@@ -1,6 +1,7 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://62hgx2uuul3p"]
 
 [ext_resource type="Texture2D" uid="uid://sn32ld0qermv" path="res://Assets/robot/Run-Walk/E_Move.png" id="1_fthl1"]
+[ext_resource type="Texture2D" uid="uid://311llvr14g3x" path="res://Assets/robot/Hug-Guard/S_Hug-Guard.png" id="2_0h1p2"]
 [ext_resource type="Texture2D" uid="uid://cf21iu1r2ifpi" path="res://Assets/robot/Run-Walk/N_Move.png" id="2_f7egh"]
 [ext_resource type="Texture2D" uid="uid://iwdg5xyalcv7" path="res://Assets/robot/Run-Walk/S_Move.png" id="3_0h1p2"]
 [ext_resource type="Texture2D" uid="uid://cla5mwha8vhnc" path="res://Assets/robot/Run-Walk/W_Move.png" id="4_cwvcm"]
@@ -21,6 +22,18 @@ region = Rect2(32, 0, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_sdwbx"]
 atlas = ExtResource("1_fthl1")
 region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwvcm"]
+atlas = ExtResource("2_0h1p2")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_llib8"]
+atlas = ExtResource("2_0h1p2")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f6x74"]
+atlas = ExtResource("2_0h1p2")
+region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_603yn"]
 atlas = ExtResource("2_f7egh")
@@ -120,6 +133,20 @@ animations = [{
 "loop": 1,
 "name": &"E_Move",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwvcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_llib8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f6x74")
+}],
+"loop": 0,
+"name": &"Interact",
+"speed": 3.0
 }, {
 "frames": [{
 "duration": 1.0,
