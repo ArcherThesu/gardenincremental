@@ -1,22 +1,23 @@
-[gd_scene format=3 uid="uid://dd1bmcuwg1hi4"]
+[gd_scene format=3 uid="uid://c5ipn8syvytpg"]
 
-[ext_resource type="Script" uid="uid://38bsa5fo4li1" path="res://Scripts/main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://cvcboxfqdxknj" path="res://garden.tscn" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dd1bmcuwg1hi4" path="res://ui_main.tscn" id="2_h2yge"]
 
-[node name="Control" type="Control" unique_id=1769535907]
-layout_mode = 3
+[node name="SubViewportContainer" type="SubViewportContainer" unique_id=1892771482]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ig7tw")
+metadata/_edit_group_ = true
 
-[node name="HFlowContainer" type="HFlowContainer" parent="." unique_id=1457959286]
-layout_mode = 0
-offset_left = 320.0
-offset_top = 128.0
-offset_right = 832.0
-offset_bottom = 512.0
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1622200426]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(640, 360)
+render_target_update_mode = 4
 
-[node name="TextureButton" type="TextureButton" parent="HFlowContainer" unique_id=1071031827]
+[node name="Node2D" parent="SubViewport" unique_id=593847005 instance=ExtResource("1_0xm2m")]
+
+[node name="Control" parent="." unique_id=1769535907 instance=ExtResource("2_h2yge")]
 layout_mode = 2

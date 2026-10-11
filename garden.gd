@@ -12,7 +12,8 @@ func _process(delta: float) -> void:
 	pass
 
 func apply_action_to_tile(action: Player.ActionType, tile: Vector2i) -> void:
-	var tile_data: TileData = get_cell_tile_data(tile)
+	var plot_num = tile.x + tile.y * 5
+	var tile_data = Player.plots[plot_num]
 	match (action):
 		Player.ActionType.PLANT_SEED:
 			print("planting seed (garden.gd)")
@@ -25,22 +26,32 @@ func apply_action_to_tile(action: Player.ActionType, tile: Vector2i) -> void:
 			change_crop_tile(tile, Player.Crops.EMPTY)
 		Player.ActionType.WATER_CROP:
 			print("watering crop (garden.gd)")
-			if tile_data.watered:
+			if tile_data["soil"] == Player.SoilState.WET or tile_data["soil"] == Player.SoilState.WETFERTILIZED:
 				push_error("tile is already watered")
 			else:
-				if tile_data.fertilized:
-					change_soil_tile(tile, Player.Soil_State.WETFERTILIZED)
+				if tile_data["soil"] == Player.SoilState.FERTILIZED:
+					change_soil_tile(tile, Player.SoilState.WETFERTILIZED)
 				else:
-					change_soil_tile(tile, Player.Soil_State.WET)
+					change_soil_tile(tile, Player.SoilState.WET)
 		Player.ActionType.FERTILIZE_SOIL:
-			print("fertilizing soil")
-			if tile_data.fertilized:
+			print("fertilizing soil (garden.gd)")
+			if tile_data["soil"] == Player.SoilState.FERTILIZED or tile_data["soil"] == Player.SoilState.WETFERTILIZED:
 				push_error("tile is already fertilized")
 			else:
-				if tile_data.watered:
+				if tile_data["soil"] == Player.SoilState.WET:
 					change_soil_tile(tile, Player.SoilState.WETFERTILIZED)
 				else:
 					change_soil_tile(tile, Player.SoilState.FERTILIZED)
+		Player.ActionType.GROW_CROP:
+			print("growing crop (garden.gd)")
+			if tile_data["crop"] == Player.Crops.EMPTY:
+				push_error("no crop to grow")
+			else:
+				change_crop_tile(tile, tile_data["crop"], tile_data["crop_state"])
+				print("crop at tile "+str(tile)+" has grown to state "+str(tile_data["crop_state"]))
+				if tile_data["crop_state"] >= 3:
+					print("crop at tile "+str(tile)+" is ready to harvest. Sending signal to robot to harvest.")
+					Player.robotmove.emit([{ "tile_coords": tile, "action": Player.ActionType.HARVEST_CROP }])
 		_:
 			push_error("invalid action: "+str(action))
 
@@ -48,7 +59,7 @@ func change_crop_tile(tile_pos: Vector2i, tile_enum: Player.Crops, crop_state: i
 	if tile_enum == Player.Crops.EMPTY:
 		erase_cell(tile_pos)
 	else:
-		set_cell(tile_pos, 1, Vector2i(tile_enum,crop_state+1))
+		set_cell(tile_pos, 1, Vector2i(crop_state+1, tile_enum-2))
 
 func change_soil_tile(tile_pos: Vector2i, tile_enum: Player.SoilState) -> void:
 	set_cell(tile_pos, 4, Vector2i(tile_enum,0))

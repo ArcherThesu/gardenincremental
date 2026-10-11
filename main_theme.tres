@@ -1,0 +1,9 @@
+[gd_resource type="Theme" format=3 uid="uid://cxgipb703iqk4"]
+
+[ext_resource type="FontFile" uid="uid://pi3cs3b0v126" path="res://Assets/mainfont.ttf" id="1_470mv"]
+
+[resource]
+Button/font_sizes/font_size = 12
+Button/fonts/font = ExtResource("1_470mv")
+Label/constants/line_spacing = 1
+Label/font_sizes/font_size = 5
