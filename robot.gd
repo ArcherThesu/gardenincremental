@@ -13,12 +13,24 @@ var movement_queue: Array = [] #fill with arrays with tile coords and action inf
 func _ready() -> void:
 	position = Vector2(200,88)
 	updated_animations(Vector2i.ZERO)
+	Player.robotmove.connect(add_to_movement_queue)
 	pass
 
 func _process(_delta) -> void:
-	pass
+	process_movement_queue()
+
+func add_to_movement_queue(mvntarr: Array) -> void:
+	movement_queue.append_array(mvntarr)
+
+func process_movement_queue() -> void:
+	if movement_queue.size() > 0:
+		var next_move = movement_queue[0]
+		move_to_tile(next_move[0])
+		do_action(next_move[1], next_move[0])
+		movement_queue.remove_at(0)
 
 func move_to_tile(tile: Vector2i) -> void:
+	
 	pass
 
 func calc_mvt(tile: Vector2i) -> Vector2i: #outputs vector2i of x and y that robot needs to move
