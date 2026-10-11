@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dd1bmcuwg1hi4"]
+
+[ext_resource type="Script" uid="uid://38bsa5fo4li1" path="res://Scripts/main.gd" id="1_ig7tw"]
+
+[node name="Control" type="Control" unique_id=1769535907]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ig7tw")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="." unique_id=1457959286]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 128.0
+offset_right = 832.0
+offset_bottom = 512.0
+
+[node name="TextureButton" type="TextureButton" parent="HFlowContainer" unique_id=1071031827]
+layout_mode = 2
