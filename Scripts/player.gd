@@ -51,19 +51,23 @@ var seed_costs := {
 
 var current_seed := Crops.WHEAT
 
-var action_time_scale := 1.0
+var action_time_scale := 5
 
-var growth_timer: float = 5.0
+var tickspeed: float = 2 #seconds per tick
+var growth_chance := .05
+var water_growth_bonus := .05
+var fertilizer_growth_bonus := .1
+var wetfertilizer_growth_bonus := water_growth_bonus + fertilizer_growth_bonus *(1+1.0/3.0) #1.33x multiplier for both water + fertilizer.
 
 var plots := [] #filled with plot properties
 
 
 var currencies := {
 	"money": 100.0,
-	"water": 0,
-	"fertilizer": 0,
+	"water": 3,
+	"fertilizer": 5,
 	"seeds" : {
-		Crops.WHEAT: 5,
+		Crops.WHEAT: 166,
 		Crops.TOMATO: 0
 	},
 	"crops" : {
@@ -80,16 +84,16 @@ var robot_is_idle: bool = true
 func _ready() -> void:
 	set_empty_plot()
 	action_on_plot.connect(do_action_on_plot)
-	growth_loop()
+	tick_loop()
 
 var loop_on: bool = true
 
-func growth_loop() -> void:
-	await get_tree().create_timer(growth_timer).timeout
-	grow_crops()
+func tick_loop() -> void:
+	await get_tree().create_timer(tickspeed).timeout
+	tick()
 
 	if loop_on:
-		growth_loop()
+		tick_loop()
 
 
 func _enter_tree() -> void:
@@ -180,7 +184,7 @@ func update_plot(plotNum: int, crop: Crops, crop_state: int, soil: SoilState) ->
 	}
 
 #runs on a timer, every few seconds tehre's a chance for a crop to grow a stage, more chance when watered and/or fertilized
-func grow_crops() -> void:
+func tick() -> void:
 	print("growing crops...")
 	if currencies["seeds"][Crops.WHEAT] > 0:
 		if robot_is_idle:
@@ -191,21 +195,27 @@ func grow_crops() -> void:
 				var tiles_to_plant := []
 				for tile in tiles:
 					tiles_to_plant.append({ "tile_coords": tile, "action": ActionType.PLANT_SEED })
-					plots[tile.x + tile.y * 5]["crop"] = Crops.SOONNOTEMPTY
+					if plots[tile.x + tile.y * 5]["soil"] == SoilState.DRY:
+						if currencies["water"] > 0:
+							tiles_to_plant.append({ "tile_coords": tile, "action": ActionType.WATER_CROP })
+							currencies["water"] -= 1
+						if currencies["fertilizer"] > 0:
+							tiles_to_plant.append({ "tile_coords": tile, "action": ActionType.FERTILIZE_SOIL })
+							currencies["fertilizer"] -= 1
 				print("using "+str(tiles.size())+" seeds to plant wheat seeds at tiles: "+str(tiles))
 				robotmove.emit(tiles_to_plant)
 		else:
 			print("robot is busy, cannot plant seeds now")
 	for i in range(plots.size()):
 		if plots[i]["crop"] != Crops.EMPTY && plots[i]["crop"] != Crops.SOONNOTEMPTY:
-			var growth_chance = 0.2
+			var calc_growth_chance := growth_chance
 			if plots[i]["soil"] == SoilState.WET:
-				growth_chance += 0.1
+				calc_growth_chance += water_growth_bonus
 			elif plots[i]["soil"] == SoilState.FERTILIZED:
-				growth_chance += 0.2
+				calc_growth_chance += fertilizer_growth_bonus
 			elif plots[i]["soil"] == SoilState.WETFERTILIZED:
-				growth_chance += 0.3
-			if randf() < growth_chance:
+				calc_growth_chance += wetfertilizer_growth_bonus
+			if randf() < calc_growth_chance:
 				if plots[i]["crop_state"] < 3:
 					plots[i]["crop_state"] += 1
 					apply_action_to_plot.emit(ActionType.GROW_CROP, Vector2i(i % 5, int(i / 5.0)))

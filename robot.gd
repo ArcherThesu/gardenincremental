@@ -1,6 +1,6 @@
 extends AnimatedSprite2D
 
-@export var spd: float = 1 #tiles per second
+@export var spd: float = 10 #tiles per second
 
 '''
 obj layout for each thing in movement queue:
@@ -34,11 +34,11 @@ func validate_movement_process(movement_action: Dictionary) -> bool:
 	if movement_action["tile_coords"] == null or movement_action["action"] == null:
 		push_error("movement_action is missing tile_coords or action: "+str(movement_action))
 		return false
-	elif movement_action["action"] == Player.ActionType.PLANT_SEED and Player.currencies["seeds"][Player.current_seed] <= 0:
+	elif movement_action["action"] == Player.ActionType.PLANT_SEED and (Player.currencies["seeds"][Player.current_seed] <= 0 or Player.plots[movement_action["tile_coords"].x + movement_action["tile_coords"].y * 5]["crop"] != Player.Crops.EMPTY):
 		return false
-	elif movement_action["action"] == Player.ActionType.WATER_CROP and Player.currencies["water"] <= 0:
+	elif movement_action["action"] == Player.ActionType.WATER_CROP and Player.currencies["water"] <= 0 and (Player.plots[movement_action["tile_coords"].x + movement_action["tile_coords"].y * 5]["soil"] == Player.SoilState.WET or Player.plots[movement_action["tile_coords"].x + movement_action["tile_coords"].y * 5]["soil"] == Player.SoilState.WETFERTILIZED):
 		return false
-	elif movement_action["action"] == Player.ActionType.FERTILIZE_SOIL and Player.currencies["fertilizer"] <= 0:
+	elif movement_action["action"] == Player.ActionType.FERTILIZE_SOIL and Player.currencies["fertilizer"] <= 0 and (Player.plots[movement_action["tile_coords"].x + movement_action["tile_coords"].y * 5]["soil"] == Player.SoilState.FERTILIZED or Player.plots[movement_action["tile_coords"].x + movement_action["tile_coords"].y * 5]["soil"] == Player.SoilState.WETFERTILIZED):
 		return false
 	elif movement_action["action"] == Player.ActionType.HARVEST_CROP and Player.plots[movement_action["tile_coords"].x + movement_action["tile_coords"].y * 5]["crop_state"] < 3:
 		return false
