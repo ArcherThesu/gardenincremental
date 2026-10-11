@@ -1,0 +1,181 @@
+[gd_resource type="TileSet" format=3 uid="uid://c4700v1it55cb"]
+
+[ext_resource type="Texture2D" uid="uid://bvcl02dcatkk4" path="res://Assets/Sprout Lands - Sprites - Basic pack/Objects/Basic_Grass_Biom_things.png" id="1_3k354"]
+[ext_resource type="Texture2D" uid="uid://b3wiicmexhuqf" path="res://Assets/Sprout Lands - Sprites - Basic pack/Objects/Basic_Plants.png" id="2_267k1"]
+[ext_resource type="Texture2D" uid="uid://bk4y327f7xcb0" path="res://Assets/Sprout Lands - Sprites - Basic pack/Objects/Basic Furniture.png" id="3_2abfg"]
+[ext_resource type="Texture2D" uid="uid://78lqfrgpkgs6" path="res://Assets/Sprout Lands - Sprites - Basic pack/Objects/Basic Grass Biom things 1.png" id="4_iib6v"]
+[ext_resource type="Texture2D" uid="uid://ds51pfvfbhbrs" path="res://Assets/Sprout Lands - Sprites - Basic pack/Objects/Basic tools and meterials.png" id="5_4judh"]
+[ext_resource type="Texture2D" uid="uid://c6y6odcxm2wr2" path="res://Assets/Sprout Lands - Sprites - Basic pack/Tilesets/Wooden House.png" id="6_512ef"]
+[ext_resource type="Texture2D" uid="uid://bnkpgmtgemla3" path="res://Assets/Sprout Lands - Sprites - Basic pack/Tilesets/Wooden_House_Roof_Tilset.png" id="7_srf68"]
+[ext_resource type="Texture2D" uid="uid://caap3wkc0myos" path="res://Assets/Sprout Lands - Sprites - Basic pack/Tilesets/Wooden_House_Walls_Tilset.png" id="8_qsh1t"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xscsr"]
+texture = ExtResource("1_3k354")
+0:0/0 = 0
+1:0/next_alternative_id = 2
+1:0/0 = 0
+2:0/next_alternative_id = 2
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+0:1/0 = 0
+1:1/next_alternative_id = 2
+1:1/0 = 0
+2:1/next_alternative_id = 2
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+8:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+8:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+8:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+8:4/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sno4j"]
+texture = ExtResource("2_267k1")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r4cdt"]
+texture = ExtResource("3_2abfg")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+8:5/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kaq4q"]
+texture = ExtResource("4_iib6v")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_62xag"]
+texture = ExtResource("5_4judh")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v15lr"]
+texture = ExtResource("6_512ef")
+1:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+0:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whs3d"]
+texture = ExtResource("7_srf68")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_evk87"]
+texture = ExtResource("8_qsh1t")
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_xscsr")
+sources/1 = SubResource("TileSetAtlasSource_sno4j")
+sources/2 = SubResource("TileSetAtlasSource_r4cdt")
+sources/3 = SubResource("TileSetAtlasSource_kaq4q")
+sources/4 = SubResource("TileSetAtlasSource_62xag")
+sources/5 = SubResource("TileSetAtlasSource_v15lr")
+sources/6 = SubResource("TileSetAtlasSource_whs3d")
+sources/7 = SubResource("TileSetAtlasSource_evk87")
