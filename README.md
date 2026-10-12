@@ -8,6 +8,7 @@ Your robot has the ability to bend reality... Use it to your advantage!
 
 Game is incredibly WIP and is actively being developed. Assets are temporary, to be made in the future, once some gameplay actually exists.
 
+FERTILIZER/WATER TEXTURES ARE TEMP TOO!
 
 [ASSETS ALL TEMPORARY]
 
