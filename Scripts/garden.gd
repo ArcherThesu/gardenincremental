@@ -17,7 +17,7 @@ func apply_action_to_tile(action: Player.ActionType, tile: Vector2i) -> void:
 	match (action):
 		Player.ActionType.PLANT_SEED:
 			print("planting seed (garden.gd)")
-			change_crop_tile(tile, Player.current_seed)
+			change_crop_tile(tile, tile_data["crop"])
 		Player.ActionType.HARVEST_CROP:
 			print("harvesting crop (garden.gd)")
 			change_crop_tile(tile, Player.Crops.EMPTY)
@@ -26,16 +26,10 @@ func apply_action_to_tile(action: Player.ActionType, tile: Vector2i) -> void:
 			change_crop_tile(tile, Player.Crops.EMPTY)
 		Player.ActionType.WATER_CROP:
 			print("watering crop (garden.gd)")
-			if tile_data["soil"] == Player.SoilState.WETFERTILIZED:
-				change_soil_tile(tile, Player.SoilState.WETFERTILIZED)
-			else:
-				change_soil_tile(tile, Player.SoilState.WET)
+			change_soil_tile(tile, tile_data["soil"])
 		Player.ActionType.FERTILIZE_SOIL:
 			print("fertilizing soil (garden.gd)")
-			if tile_data["soil"] == Player.SoilState.WETFERTILIZED:
-				change_soil_tile(tile, Player.SoilState.WETFERTILIZED)
-			else:
-				change_soil_tile(tile, Player.SoilState.FERTILIZED)
+			change_soil_tile(tile, tile_data["soil"])
 		Player.ActionType.GROW_CROP:
 			print("growing crop (garden.gd)")
 			if tile_data["crop"] == Player.Crops.EMPTY:
@@ -45,14 +39,12 @@ func apply_action_to_tile(action: Player.ActionType, tile: Vector2i) -> void:
 				print("crop at tile "+str(tile)+" has grown to state "+str(tile_data["crop_state"]))
 				if tile_data["crop_state"] >= 3:
 					print("crop at tile "+str(tile)+" is ready to harvest. Sending signal to robot to harvest.")
-					Player.robotmove.emit([{ "tile_coords": tile, "action": Player.ActionType.HARVEST_CROP }])
+					# Keep harvest requests in the same per-tile action-bundle format as tick plans.
+					Player.robotmove.emit([{ "tile_coords": tile, "actions": [Player.ActionType.HARVEST_CROP] }])
 
 		Player.ActionType.REMOVE_MODIFIER:
 			print("removing modifier from soil (garden.gd)")
-			if tile_data["soil"] == Player.SoilState.DRY:
-				change_soil_tile(tile, Player.SoilState.DRY)
-			elif tile_data["soil"] == Player.SoilState.WET:
-				change_soil_tile(tile, Player.SoilState.WET)
+			change_soil_tile(tile, tile_data["soil"])
 		_:
 			push_error("invalid action: "+str(action))
 
@@ -62,6 +54,15 @@ func change_crop_tile(tile_pos: Vector2i, tile_enum: Player.Crops, crop_state: i
 	else:
 		set_cell(tile_pos, 1, Vector2i(crop_state+1, tile_enum-2))
 
-func change_soil_tile(tile_pos: Vector2i, tile_enum: Player.SoilState) -> void:
-	self.get_parent().set_cell(tile_pos, 4, Vector2i(tile_enum,0))
-	print("soil tile at "+str(tile_pos)+" changed to "+str(tile_enum))
+func change_soil_tile(tile_pos: Vector2i, soil: Array[Player.SoilState]) -> void:
+	# Modifier rendering is centralized here; WATER_CROP, FERTILIZE_SOIL, and
+	# REMOVE_MODIFIER all call this. For separate modifier layers, add aligned
+	# TileMapLayers under "plots", then replace the combined tile below with
+	# per-layer set_cell/erase_cell calls based on soil.has(WET/FERTILIZED).
+	var tile_state := 0
+	if soil.has(Player.SoilState.WET):
+		tile_state += 1
+	if soil.has(Player.SoilState.FERTILIZED):
+		tile_state += 2
+	self.get_parent().set_cell(tile_pos, 4, Vector2i(tile_state,0))
+	print("soil tile at "+str(tile_pos)+" changed to "+str(soil))

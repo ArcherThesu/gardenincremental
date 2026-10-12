@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://38bsa5fo4li1" path="res://Scripts/main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://bdnpcr05seatu" path="res://Scenes/seed_selector.tscn" id="2_fd6cx"]
 [ext_resource type="PackedScene" uid="uid://dudb4f2jbb7ao" path="res://main_currency_list.tscn" id="3_ym4qu"]
+[ext_resource type="PackedScene" uid="uid://gcuxu2ln1jiu" path="res://Scenes/crops_inventory.tscn" id="4_hsbnh"]
 
 [node name="Control" type="Control" unique_id=1769535907]
 layout_mode = 3
@@ -17,4 +18,7 @@ script = ExtResource("1_ig7tw")
 layout_mode = 1
 
 [node name="mainCurrencyList" parent="." unique_id=2028991423 instance=ExtResource("3_ym4qu")]
+layout_mode = 1
+
+[node name="crops_inventory" parent="." unique_id=2030800536 instance=ExtResource("4_hsbnh")]
 layout_mode = 1

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://gcuxu2ln1jiu"]
+
+[ext_resource type="Script" uid="uid://cgx33is3we3c7" path="res://Scripts/crops_inventory.gd" id="1_mp6bm"]
+[ext_resource type="PackedScene" uid="uid://bpbqvoxh4vfst" path="res://Scenes/crops_button.tscn" id="2_qa5sc"]
+
+[node name="crops_inventory" type="Control" unique_id=2030800536]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 384.0
+offset_top = 248.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mp6bm")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=605233678]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -112.0
+grow_horizontal = 0
+grow_vertical = 0
+metadata/_edit_group_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=1513401061]
+custom_minimum_size = Vector2(256, 0)
+custom_maximum_size = Vector2(256, -1)
+layout_mode = 2
+
+[node name="crops_button" parent="ScrollContainer/VBoxContainer" unique_id=765059207 instance=ExtResource("2_qa5sc")]
+layout_mode = 2
+
+[node name="crops_button2" parent="ScrollContainer/VBoxContainer" unique_id=966898470 instance=ExtResource("2_qa5sc")]
+layout_mode = 2

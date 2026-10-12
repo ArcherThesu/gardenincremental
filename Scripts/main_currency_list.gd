@@ -11,4 +11,4 @@ func _process(delta: float) -> void:
 	update_currency_list()
 
 func update_currency_list() -> void:
-	%mainCurrencyLabel.text = "Money: $"+str(Player.currencies["money"])+"\nWater: "+str(Player.currencies["water"])+"x\nFertilizer: "+str(Player.currencies["fertilizer"])+"x"
+	%mainCurrencyLabel.text = "Money: $"+str(Player.currencies["money"])+"\nWater: "+str(Player.currencies["modifiers"][Player.SoilState.WET])+"x\nFertilizer: "+str(Player.currencies["modifiers"][Player.SoilState.FERTILIZED])+"x"

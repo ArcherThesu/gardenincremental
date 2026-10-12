@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bpbqvoxh4vfst"]
+
+[ext_resource type="Theme" uid="uid://cxgipb703iqk4" path="res://Assets/main_theme.tres" id="1_fmlhn"]
+
+[node name="crops_button" type="HBoxContainer" unique_id=765059207]
+offset_right = 264.0
+offset_bottom = 64.0
+
+[node name="cropButtonContainer" type="PanelContainer" parent="." unique_id=924187085]
+custom_minimum_size = Vector2(0, 64)
+custom_maximum_size = Vector2(192, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="cropButtonContainer" unique_id=1320325250]
+layout_mode = 2
+theme = ExtResource("1_fmlhn")
+text = "Wheat - 1e35317530157310957315301x"
+flat = true
+autowrap_mode = 3
+
+[node name="cropSellButtonContainer" type="PanelContainer" parent="." unique_id=469491242]
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="cropSellButtonContainer" unique_id=410116841]
+layout_mode = 2
+theme = ExtResource("1_fmlhn")
+text = "Sell ($130531905705e135031750725)"
+flat = true
+autowrap_mode = 3
