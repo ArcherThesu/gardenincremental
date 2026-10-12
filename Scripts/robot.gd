@@ -18,6 +18,8 @@ var idle_position: Vector2i = Vector2i(216,88)
 # When processing something in the queue, start by grabbing tile info to move to the tile (grab tile info -> calculate how to move it -> move), then process any actions to be done there. 
 # Once last action is done for that queue, begin processing next action.
 # Called when the node enters the scene tree for the first time.
+
+# to be implemented: if robot is moving to idle position and a new action pops up to movement queue, do it immediately.
 func _ready() -> void:
 	position = idle_position
 	update_animations(Vector2i.ZERO)
@@ -51,7 +53,6 @@ func process_movement_queue() -> void:
 		return
 	queue_processing = true
 	if movement_queue.size() > 0:
-		print("movement queue: "+str(movement_queue))
 		var next_move = movement_queue[0]
 		if not validate_movement_process(next_move):
 			movement_queue.remove_at(0)
@@ -64,16 +65,15 @@ func process_movement_queue() -> void:
 		if Vector2i(position) != idle_position:
 			print("robot is not at idle position, moving to idle position")
 			var idle_tile = tile_map_plots.local_to_map(tile_map_plots.to_local(get_parent().to_global(idle_position)))
-			await move_to_tile(idle_tile)
+			await move_to_tile(idle_tile, true)
 			update_animations(Vector2i.ZERO)
 	queue_processing = false
 
 
-func move_to_tile(tile: Vector2i) -> void:
+func move_to_tile(tile: Vector2i, to_idle: bool = false) -> void:
 	var target_global_position = tile_map_plots.to_global(tile_map_plots.map_to_local(tile))
 	var new_position = get_parent().to_local(target_global_position)
 	update_animations(new_position-position)
-	print("moving to tile: "+str(tile)+" at position: "+str(new_position))
 
 	#getting current tile to calculate distance to new tile, then using that to calculate duration of movement based on speed
 	var current_tile = tile_map_plots.local_to_map(tile_map_plots.to_local(global_position))
@@ -81,9 +81,9 @@ func move_to_tile(tile: Vector2i) -> void:
 
 	var newtween = create_tween()
 	newtween.tween_property(self, "position", new_position, duration).set_trans(Tween.TRANS_LINEAR)
+	
 	await newtween.finished
 
-	print("finished moving to tile: "+str(tile))
 	return
 
 
@@ -104,7 +104,6 @@ func do_action(action: Player.ActionType, tile: Vector2i) -> void:
 	update_animations(Vector2i.ZERO)
 
 func update_animations(mvt: Vector2i) -> void:
-	print("updating animations with mvt: "+str(mvt))
 	speed_scale = spd
 	var dir: int = Player.Direction.IDL #IDL, N, E, S, W
 	if mvt != Vector2i.ZERO:

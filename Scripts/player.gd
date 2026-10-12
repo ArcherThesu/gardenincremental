@@ -22,7 +22,8 @@ enum ActionType {
 	DELETE_CROP,
 	WATER_CROP,
 	FERTILIZE_SOIL,
-	GROW_CROP
+	GROW_CROP,
+	REMOVE_MODIFIER
 }
 
 enum Crops {
@@ -30,6 +31,13 @@ enum Crops {
 	SOONNOTEMPTY,
 	WHEAT,
 	TOMATO
+}
+
+var cropstr := {
+	Crops.EMPTY: "empty",
+	Crops.SOONNOTEMPTY: "soonnotempty",
+	Crops.WHEAT: "wheat",
+	Crops.TOMATO: "tomato"
 }
 
 enum SoilState {
@@ -58,9 +66,11 @@ var growth_chance := .05
 var water_growth_bonus := .05
 var fertilizer_growth_bonus := .1
 var wetfertilizer_growth_bonus := water_growth_bonus + fertilizer_growth_bonus *(1+1.0/3.0) #1.33x multiplier for both water + fertilizer.
-
+var water_robot_on := true
+var fertilizer_robot_on := true
 var plots := [] #filled with plot properties
-
+var remove_modifier_chance := 0.5 #chance to remove modifier on tick, if modifier is present
+var seed_bulk_buy := 1 # number of seeds to buy at once when buying seeds from seed selector
 
 var currencies := {
 	"money": 100.0,
@@ -145,6 +155,9 @@ func do_action_on_plot(action: ActionType, tile: Vector2i) -> void:
 			if plots[tile_num]["soil"] == SoilState.WET or plots[tile_num]["soil"] == SoilState.WETFERTILIZED:
 				push_error("tile is already watered")
 			else:
+				print("watering tile at "+str(tile))
+				print("current state of tile: "+str(plots[tile_num]["soil"]))
+				print("is it fertilized? "+str(plots[tile_num]["soil"] == SoilState.FERTILIZED))
 				if plots[tile_num]["soil"] == SoilState.FERTILIZED:
 					plots[tile_num]["soil"] = SoilState.WETFERTILIZED
 					update_plot(tile_num, plots[tile_num]["crop"], plots[tile_num]["crop_state"], SoilState.WETFERTILIZED)
@@ -165,8 +178,6 @@ func do_action_on_plot(action: ActionType, tile: Vector2i) -> void:
 
 	apply_action_to_plot.emit(action, tile)
 	print("action applied to plot: "+str(action)+" at tile: "+str(tile))
-	print_plots()
-	print_currencies()
 
 func set_empty_plot() -> void:
 	for i in range(25):
@@ -196,10 +207,10 @@ func tick() -> void:
 				for tile in tiles:
 					tiles_to_plant.append({ "tile_coords": tile, "action": ActionType.PLANT_SEED })
 					if plots[tile.x + tile.y * 5]["soil"] == SoilState.DRY:
-						if currencies["water"] > 0:
+						if currencies["water"] > 0 && water_robot_on:
 							tiles_to_plant.append({ "tile_coords": tile, "action": ActionType.WATER_CROP })
 							currencies["water"] -= 1
-						if currencies["fertilizer"] > 0:
+						if currencies["fertilizer"] > 0 && fertilizer_robot_on:
 							tiles_to_plant.append({ "tile_coords": tile, "action": ActionType.FERTILIZE_SOIL })
 							currencies["fertilizer"] -= 1
 				print("using "+str(tiles.size())+" seeds to plant wheat seeds at tiles: "+str(tiles))
@@ -218,6 +229,16 @@ func tick() -> void:
 			if randf() < calc_growth_chance:
 				if plots[i]["crop_state"] < 3:
 					plots[i]["crop_state"] += 1
+					if randf() < remove_modifier_chance:
+						if plots[i]["soil"] == SoilState.WET:
+							plots[i]["soil"] = SoilState.DRY
+							apply_action_to_plot.emit(ActionType.REMOVE_MODIFIER, Vector2i(i % 5, int(i / 5.0)))
+						elif plots[i]["soil"] == SoilState.FERTILIZED:
+							plots[i]["soil"] = SoilState.DRY
+							apply_action_to_plot.emit(ActionType.REMOVE_MODIFIER, Vector2i(i % 5, int(i / 5.0)))
+						elif plots[i]["soil"] == SoilState.WETFERTILIZED:
+							plots[i]["soil"] = SoilState.WET
+							apply_action_to_plot.emit(ActionType.REMOVE_MODIFIER, Vector2i(i % 5, int(i / 5.0)))
 					apply_action_to_plot.emit(ActionType.GROW_CROP, Vector2i(i % 5, int(i / 5.0)))
 					print("crop at plot "+str(i)+" has grown to state "+str(plots[i]["crop_state"]))
 

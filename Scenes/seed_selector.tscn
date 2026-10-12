@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bdnpcr05seatu"]
+
+[ext_resource type="Script" uid="uid://d1vkqxj1m82x" path="res://Scripts/seed_selector.gd" id="1_0an3e"]
+[ext_resource type="PackedScene" uid="uid://dk7elakol5npw" path="res://Scenes/seed_button.tscn" id="1_1ecv3"]
+
+[node name="SeedSelector" type="Control" unique_id=1665380174]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0an3e")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=767259454]
+layout_mode = 1
+offset_right = 256.0
+offset_bottom = 112.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=134493382]
+custom_minimum_size = Vector2(256, 0)
+custom_maximum_size = Vector2(256, -1)
+layout_mode = 2
+
+[node name="seedButton" parent="ScrollContainer/VBoxContainer" unique_id=1319660117 instance=ExtResource("1_1ecv3")]
+layout_mode = 2
+
+[node name="seedButton2" parent="ScrollContainer/VBoxContainer" unique_id=513239770 instance=ExtResource("1_1ecv3")]
+layout_mode = 2
+
+[node name="seedButton3" parent="ScrollContainer/VBoxContainer" unique_id=452527469 instance=ExtResource("1_1ecv3")]
+layout_mode = 2

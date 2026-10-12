@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dk7elakol5npw"]
+
+[ext_resource type="Theme" uid="uid://cxgipb703iqk4" path="res://Assets/main_theme.tres" id="1_ow6sb"]
+
+[node name="seedButton" type="HBoxContainer" unique_id=1319660117]
+custom_maximum_size = Vector2(-1, 48)
+offset_right = 256.0
+offset_bottom = 64.0
+
+[node name="seedButtonContainer" type="PanelContainer" parent="." unique_id=445735084]
+custom_minimum_size = Vector2(0, 64)
+custom_maximum_size = Vector2(192, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="seedButtonContainer" unique_id=699962599]
+layout_mode = 2
+theme = ExtResource("1_ow6sb")
+text = "Wheat Seeds - 1e23958082023058235238058x (Selected)"
+flat = true
+autowrap_mode = 3
+
+[node name="seedBuyButtonContainer" type="PanelContainer" parent="." unique_id=1483137915]
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="seedBuyButtonContainer" unique_id=1777469347]
+layout_mode = 2
+theme = ExtResource("1_ow6sb")
+text = "Buy (1e13581350)"
+flat = true
+autowrap_mode = 3
