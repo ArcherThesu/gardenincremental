@@ -81,7 +81,7 @@ var currencies := {
 		Crops.TOMATO: 0
 	},
 	"crops" : {
-		Crops.WHEAT: 0,
+		Crops.WHEAT: 15,
 		Crops.TOMATO: 0
 	},
 	"modifiers": {
@@ -306,8 +306,12 @@ func sell_crop(crop_type: Crops, amount: int) -> void:
 	if currencies["crops"][crop_type] < amount:
 		push_error("not enough crops to sell")
 		return
+	
+	var actual_value = crop_values[crop_type] * amount #adding multipliers to selling crops would go here
 	currencies["crops"][crop_type] -= amount
-	currencies["money"] += crop_values[crop_type] * amount
+	currencies["money"] += actual_value
+
+	create_floating_text("+$"+str(actual_value),Vector2(-256,172))
 	print("sold "+str(amount)+" "+str(crop_type)+" for "+str(crop_values[crop_type] * amount)+" money")
 
 func buy_seed(seed_type: Crops, amount: int) -> void:
@@ -318,12 +322,20 @@ func buy_seed(seed_type: Crops, amount: int) -> void:
 		push_error("seed amount must be greater than zero")
 		return
 	var cost = seed_costs[seed_type] * amount
-	if currencies["money"] < cost:
+	if currencies["money"] < cost: #add sfx when not enough money...
 		push_error("not enough money to buy seeds")
 		return
 	currencies["money"] -= cost
 	currencies["seeds"][seed_type] += amount
+	
+	create_floating_text("+"+str(amount)+" " +cropstr[seed_type].capitalize()+" Seeds", Vector2(-256,172))
 	print("bought "+str(amount)+" "+str(seed_type)+" seeds for "+str(cost)+" money")
 
 func set_current_seed(seed_type: Crops) -> void:
 	current_seed = seed_type
+
+@onready var floating_txt_scene = preload("res://Scenes/floating_text.tscn")
+func create_floating_text(txt: String, global_pos: Vector2) -> void:
+	var new_txt = floating_txt_scene.instantiate()
+	new_txt.play_text(txt,global_pos)
+	get_tree().current_scene.add_child(new_txt)

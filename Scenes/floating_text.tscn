@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bcrw5r26pgnk3"]
+
+[ext_resource type="Script" uid="uid://b1bph0v68v4i4" path="res://Scripts/floating_text.gd" id="1_kfvxn"]
+[ext_resource type="Theme" uid="uid://cxgipb703iqk4" path="res://Assets/main_theme.tres" id="2_f3tku"]
+
+[node name="floating_text" type="Control" unique_id=1193526081]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -512.0
+offset_bottom = -328.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kfvxn")
+
+[node name="txt" type="RichTextLabel" parent="." unique_id=1245582988]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_f3tku")
+text = "+1 Cantelope Seeds"
+horizontal_alignment = 1
